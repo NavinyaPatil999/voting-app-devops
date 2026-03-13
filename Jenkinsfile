@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_USER = 'navinya999'
-        DOCKER_PASS = 'Kimtaehyung2003.'
+        DOCKER_PASS = '6f21e6ecdced1989ac5da8f05a3cba78'
         IMAGE_TAG = "${BUILD_NUMBER}"
     }
 
