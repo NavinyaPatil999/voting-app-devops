@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         DOCKER_USER = 'navinya999'
-        DOCKER_PASS = '6f21e6ecdced1989ac5da8f05a3cba78'
         IMAGE_TAG = "${BUILD_NUMBER}"
     }
 
@@ -35,12 +34,14 @@ pipeline {
 
         stage('Push Images') {
             steps {
-                bat "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
-                bat "docker push %DOCKER_USER%/voting-backend:%IMAGE_TAG%"
-                bat "docker push %DOCKER_USER%/voting-backend:latest"
-                bat "docker push %DOCKER_USER%/voting-frontend:%IMAGE_TAG%"
-                bat "docker push %DOCKER_USER%/voting-frontend:latest"
-                bat "docker logout"
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    bat "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
+                    bat "docker push %DOCKER_USER%/voting-backend:%IMAGE_TAG%"
+                    bat "docker push %DOCKER_USER%/voting-backend:latest"
+                    bat "docker push %DOCKER_USER%/voting-frontend:%IMAGE_TAG%"
+                    bat "docker push %DOCKER_USER%/voting-frontend:latest"
+                    bat "docker logout"
+                }
             }
         }
 
